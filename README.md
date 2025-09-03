@@ -2,7 +2,7 @@
 A C11 game engine
 
 
-** High-Level Project Directory Map ** 
+## High-Level Project Directory Map 
 
 Here is the top-level directory structure. Each component is explained in detail in the following sections.
 
@@ -29,7 +29,7 @@ Here is the top-level directory structure. Each component is explained in detail
 
 ```
 
-** Detailed Directory Breakdown ** 
+## Detailed Directory Breakdown
 
 ```
 /bin/ 				The executables (editor.exe, game.exe) and dynamic library (.dll, .so)
@@ -85,7 +85,7 @@ Here is the top-level directory structure. Each component is explained in detail
 	It loads, compiles (using TCC), and manages the lifecycle of script files. 
 	It uses the reflection data to bind engine functions to the script.
 			
-/source/plugins/
+**/source/plugins/**
 
 	* Similar to modules, but easily shareable and optional.
 	* For third-party additions or features not considered "standard" for the engine.
@@ -97,7 +97,7 @@ Here is the top-level directory structure. Each component is explained in detail
 	* A game developer can easily drop a new plugin into this folder.
 	* The module system in /core/ will recognize and load it without engine source modification.
 	
-/source/tools/
+###/source/tools/
 
 	* Purpose: Command-line utilities that support the development pipeline.
 	* The most important is the reflection tool.
@@ -111,8 +111,10 @@ Here is the top-level directory structure. Each component is explained in detail
 	Reasoning: This pre-build step is the "magic" that enables the rest of the engine to be so powerful.
 	The generated reflection data is used by:
 
-	The Editor: To automatically create property editors for any reflected C struct.
-	The Serializer: To save and load component data to/from disk.
-	The Scripting System: To expose engine functions and data types to C scripts without manual binding.
+	1. The Editor: To automatically create property editors for any reflected C struct.
+	2. The Serializer: To save and load component data to/from disk.
+	3. The Scripting System: To expose engine functions and data types to C scripts without manual binding.
+
+###/source/editor/
 
 ```
