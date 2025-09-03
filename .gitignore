@@ -58,6 +58,7 @@ dkms.conf
 [Bb]uild/
 [Bb]in/
 [Oo]ut/
+[Ll]lib/
 build/
 **/build/
 cmake-build-*/
