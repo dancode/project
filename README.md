@@ -6,6 +6,7 @@ A C11 game engine
 
 Here is the top-level directory structure. Each component is explained in detail in the following sections.
 
+```
 /engine/
 ├─── build/                	// Build output (binaries, intermediate files)
 ├─── docs/                 	// Engine documentation
@@ -25,3 +26,4 @@ Here is the top-level directory structure. Each component is explained in detail
           └─── config/		// 
 		  └─── source/		// compiled game module code
 
+```
