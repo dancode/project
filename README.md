@@ -39,9 +39,9 @@ Here is the top-level directory structure. Each component is explained in detail
 
 /external/			All third-party libraries so they are self contained.
 
-	We check dependencies directly into our repository to avoids reliance 
-	on system-wide package managers and guarantees that the engine will build
-	consistently on any machine.
+	* We check dependencies directly into our repository.
+	* No reliance on package managers. 
+	* Compiles onsistently on any machine.
 
 /external/cglm/ 	A highly optimized math library for C.
 /external/glfw/ 	Windowing and input library.
@@ -57,25 +57,34 @@ Here is the top-level directory structure. Each component is explained in detail
 	data_structures	Optimized data structures (dynamic arrays, hash tables)
 	foundation		A single header for basic types (u8, f32), macros, and assertions (used everywhere).
 
-	A lean core ensures that the engine's foundation is stable and fast. By making it dependency-free, we can compile it quickly and use it as a stable base for all other systems. The module_system is the lynchpin; it allows the rest of the engine to be built as isolated units.
+	* A lean core ensures that the engine's foundation is stable and fast. 
+	* Dependency-free, can compile quickly and use it as a stable base for all other systems. 
+	* The module system is the lynchpin; it allows the rest of the engine to be built as isolated units.
 
 /source/modules/	
 
-	Conains the standard high level engine features.
+	* Conains the standard high level engine features.
 
-	Each subdirectory is a self-contained module that exposes its functionality through a C API.
-	These modules can depend on /core/ but should not, as a rule, depend on each other directly.
-	They communicate through the core systems or well-defined interfaces.
+	* Each subdirectory is a self-contained module that exposes its functionality through a C API.
+	* These modules can depend on /core/ but should not, as a rule, depend on each other directly.
+	* They communicate through the core systems or well-defined interfaces.
 	
+	* This is the essence of a modular engine. The renderer doesn't know what physics is. 
+	The scripting system only knows about functions and data types exposed via reflection.
+	
+	* This separation allows development work independently and enables developers to include
+	only the modules they need for their specific game.
+
+
 	/renderer/		Handles all graphics. Exposes an API like renderer_api->draw_mesh(...)
 					It can be swapped out (e.g., from Vulkan to DirectX).					
 	/physics/ 		The physics simulation.	
 	/audio/ 		Sound playback and processing.	
-	/ecs system/ 	The entity-component-system for managing game objects.	
+	/ecs/ 			The entity-component-system for managing game objects.	
 	/script/ 		The C scripting host. 
 	
 	It loads, compiles (using TCC), and manages the lifecycle of script files. 
 	It uses the reflection data to bind engine functions to the script.
-	
+		
 	
 ```
