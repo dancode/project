@@ -41,6 +41,21 @@ Here is the top-level directory structure. Each component is explained in detail
 /external/stb/: 	Single-header public domain libraries (image loading, etc.).
 /external/tcc/: 	The Tiny C Compiler, used for our C scripting backend.
 
+```
 Note: We check dependencies directly into our repository. This avoids reliance on system-wide package managers and guarantees that the engine will build consistently on any machine, today or five years from now.
 
 ```
+/source/ 			Contains all the custom code for the engine and its applications.
+/source/core/		Minimal, platform-agnostic, zero dependencys engine module
+
+	memory_system	Custom memory allocators (arena, pool).
+	file_system 	Abstracted file I/O interfaces.
+	module_system	The module loading and management system (pluggable architecture).
+	data_structures	Optimized data structures (dynamic arrays, hash tables)
+	foundation.h	A single header for basic types (u8, f32), macros, and assertions (used everywhere).
+
+```
+	A lean core ensures that the engine's foundation is stable and fast. By making it dependency-free, we can compile it quickly and use it as a stable base for all other systems. The module_system is the lynchpin; it allows the rest of the engine to be built as isolated units.
+ 
+
+
