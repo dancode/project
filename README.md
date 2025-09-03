@@ -35,11 +35,12 @@ Here is the top-level directory structure. Each component is explained in detail
 					system and can be deleted and regenerated.
 					(bin and build are exclused from version control)
 		
-/external/			All third-party libraries, so they are self contained for example:
-/external/cglm/: 	A highly optimized math library for C.
-/external/glfw/: 	Windowing and input library.
-/external/stb/: 	Single-header public domain libraries (image loading, etc.).
-/external/tcc/: 	The Tiny C Compiler, used for our C scripting backend.
+/external/			All third-party libraries so they are self contained.
+
+/external/cglm/ 	A highly optimized math library for C.
+/external/glfw/ 	Windowing and input library.
+/external/stb/ 		Single-header public domain libraries (image loading, etc.).
+/external/tcc/ 		The Tiny C Compiler, used for our C scripting backend.
 
 ```
 Note: We check dependencies directly into our repository. This avoids reliance on system-wide package managers and guarantees that the engine will build consistently on any machine, today or five years from now.
@@ -55,7 +56,11 @@ Note: We check dependencies directly into our repository. This avoids reliance o
 	foundation.h	A single header for basic types (u8, f32), macros, and assertions (used everywhere).
 
 ```
+
 	A lean core ensures that the engine's foundation is stable and fast. By making it dependency-free, we can compile it quickly and use it as a stable base for all other systems. The module_system is the lynchpin; it allows the rest of the engine to be built as isolated units.
+
+```
  
+```
 
 
