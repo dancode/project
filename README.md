@@ -97,5 +97,22 @@ Here is the top-level directory structure. Each component is explained in detail
 	* A game developer can easily drop a new plugin into this folder.
 	* The module system in /core/ will recognize and load it without engine source modification.
 	
+/source/tools/
+
+	* Purpose: Command-line utilities that support the development pipeline.
+	* The most important is the reflection tool.
+	
+	/reflection_tool/ 			
+	
+	* A C program that parses specially commented C header files (.h) across the engine.
+	* Generates .c files containing reflection data.
+	* This data includes information about structs, their members, functions, and enums.
+
+	Reasoning: This pre-build step is the "magic" that enables the rest of the engine to be so powerful.
+	The generated reflection data is used by:
+
+	The Editor: To automatically create property editors for any reflected C struct.
+	The Serializer: To save and load component data to/from disk.
+	The Scripting System: To expose engine functions and data types to C scripts without manual binding.
 
 ```
