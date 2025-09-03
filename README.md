@@ -85,7 +85,7 @@ Here is the top-level directory structure. Each component is explained in detail
 	It loads, compiles (using TCC), and manages the lifecycle of script files. 
 	It uses the reflection data to bind engine functions to the script.
 			
-**/source/plugins/**
+/source/plugins/
 
 	* Similar to modules, but easily shareable and optional.
 	* For third-party additions or features not considered "standard" for the engine.
@@ -97,7 +97,7 @@ Here is the top-level directory structure. Each component is explained in detail
 	* A game developer can easily drop a new plugin into this folder.
 	* The module system in /core/ will recognize and load it without engine source modification.
 	
-###/source/tools/
+/source/tools/
 
 	* Purpose: Command-line utilities that support the development pipeline.
 	* The most important is the reflection tool.
@@ -115,6 +115,45 @@ Here is the top-level directory structure. Each component is explained in detail
 	2. The Serializer: To save and load component data to/from disk.
 	3. The Scripting System: To expose engine functions and data types to C scripts without manual binding.
 
-###/source/editor/
+/source/editor/
+
+	* The source code for the editor application itself. 
+	* The editor is just another application that uses the engine's core and modules.
+
+	main.c			: The entry point for the editor.
+	editor_ui.c		: All the UI code (e.g., using a library like Dear ImGui). 
+					: This UI is built by inspecting the reflection data.
+
+	gizmos.c		: Code for drawing and interacting with 3D manipulation gizmos in the viewport.
+
+	* The editor is not the engine; it is a consumer of the engine. 
+	* This approach forces us to develop clean, public-facing APIs for our modules, 
+	* As the editor has to use them just like a game would.
+	
+/source/game/
+
+	* The source code for playable game runtime -- This is what you ship to players.
+
+	game.c 			: Logic for managing the game state.
+	main.c			: The entry point for the game. 
+	
+	Initializes the core, loads the necessary modules and game scripts, and starts the main game loop.
+	
+	* We build two primary executables: editor.exe and game.exe. 
+	* The game executable is highly optimized and does not include any editor-specific code or modules, resulting in a smaller, faster final product for players.
+
+/projects/
+	
+	* This directory lives outside the /source/ tree and contains the actual game project data.
+	* The engine's code should remain completely separate from the game's data.
+	
+	/demo_game/assets/	: All game assets—models, textures, sounds.
+	/demo_game/scripts/	: The user-written C script files. These are loaded and hot-reloaded by the scripting_system module at runtime.
+	/demo_game/config/	: Project configuration files, input bindings, etc.
+
+	* Decoupling the engine source from project data is paramount. 
+	* It means you can update the engine source code without impacting your game data. 
+	* It also means multiple game projects can share the same engine installation. 
+	* The engine treats project files as pure data to be loaded and manipulated.
 
 ```
