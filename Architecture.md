@@ -32,4 +32,39 @@ programs/
 	
 ## 3. Game Root Module
 
+```
+
+	Each project has a root runtime module in projects/<Game>/source/<GameName>/.
+	It’s treated exactly like an engine module — it exports module_init, module_shutdown, module_tick.
+
+	This becomes the main gameplay entry point.
+
+	So Game.dll is just another module, but the host runtime ensures it gets loaded last.
+	(so it can bind to all engine modules).
+		
+
+```
+
 ## 4. Editor Root Module
+
+```
+	modules/editor/ is the root editor shell (dock windows, inspectors).
+
+	It loads other editor modules (asset_tools, graph_tools, etc.).
+
+	When you run editor.exe, the main loads core, then editor, then game’s editor module if present.
+
+	So editor boot sequence looks like:
+	
+	main() → load core → load reflect → load platform → load editor → load game’s Editor module.
+	
+
+```
+
+## Boot Sequence Examples
+
+```
+
+
+
+```
