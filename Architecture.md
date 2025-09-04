@@ -57,6 +57,20 @@ programs/
 		
 ```
 
+## 5. More explanation
+
+``` 
+
+	* You always ship/run the same tiny host program (e.g. cobalt_runtime.exe).
+	* It doesn’t know about modules at compile time (my earlier example hard-coded modules for clarity).
+	* Instead, it just:
+		* Reads a project descriptor (game.toml / manifest.json).
+		* Loads all the modules listed there in dependency order
+
+	* Your project doesn’t generate a “native” MyGame.exe — it always launches via the bootstrapper.
+
+```
+
 ## Boot Sequence Examples
 
 ```
@@ -92,6 +106,8 @@ programs/
 
 ```
 
+** programs/cobalt_runtime/main.c **
+
 #include "cobalt_platform.h"
 #include "cobalt_modules.h"
 
@@ -118,6 +134,87 @@ int main(int argc, char** argv) {
     platform_shutdown();
     return 0;
 }
+
+** projects/MyGame/Source/MyGame/module.c **
+
+	#include "cobalt_api.h"
+	
+	static const CobaltAPI* g_api;
+	
+	bool module_init(const ModuleInitParams* params) {
+		g_api = params->api;
+		g_api->log(1, "MyGame", "Game module initialized");
+		return true;
+	}
+	
+	void module_shutdown(void) {
+		g_api->log(1, "MyGame", "Game module shutting down");
+	}
+	
+	void module_tick(double dt) {
+		// Game loop logic: update world, spawn systems, run ECS
+	}
+
+** Summary **
+
+	* main() lives only in host programs (cobalt_runtime, cobalt_editor, etc.).
+	* core is the root module of the engine — everything else depends on it.
+	* The game root is just a module loaded last.
+	* The editor root is just a module loaded when the editor host runs.	
+	* The engine is not monolithic — it’s a collection of modules, the host decides which ones to load.
+
+```
+
+## Bootstrapper 
+
+```
+
+	1. Single Bootstrapper Executable (Most Common in Modular Engines)
+
+	* It doesn’t know about modules at compile time (my earlier example hard-coded modules for clarity)	
+	* Instead, it just:
+		* Reads a project descriptor (game.toml / manifest.json).
+		* Loads all the modules listed there in dependency order.
+	
+	* PRO: No recompilation needed for each project.
+	* PRO: Clean separation: engine binary stays the same across all games.
+	* PRO: Works well with hot-reloading (swap DLLs while the runtime stays alive).	
+	* CON: Your project doesn’t generate a “native” MyGame.exe
+	
+	Directory: 
+	
+	programs/
+	└─ cobalt_runtime/   				→ single reusable .exe
+	
+	projects/
+	└─ MyGame/
+		├─ game.toml     				→ declares entry module + dependencies
+		└─ Binaries/Win64/MyGame.dll
+	
+	game.cproj
+
+	{
+		name = "MyGame"
+		entry_module = "MyGame"
+		modules = ["ecs", "renderer", "physics", "audio"]
+	}
+		
+	int main(int argc, char** argv) 
+	{
+		platform_init(argc, argv);
+		module_manager_init();
+
+		ProjectManifest manifest = load_manifest("game.toml");
+		for (module in manifest.modules)
+			module_manager_load(module);
+
+		module_manager_load(manifest.entry_module); // Game root
+
+		loop();
+	}
+	
+	* 
+
 
 ```
 

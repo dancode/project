@@ -13,21 +13,6 @@ programs/
  └─ server/    				# Optional dedicated server host.
 
 
-	Each one has a main function that:
-		- Sets up platform layer (window, input, file system).
-		- Loads the module manager.
-		- Loads the initial modules (core, reflect, etc.).
-		- Hands control to a loop (while(running) { module_tick(dt); }).
-	
-	There is no engine.dll	
-		- modules/core/ is the true root (logging, memory, jobs, assert).
-		- other modules depend on core.
-		- at startup the host always loads core first.
-		
-	Engine = the set of modules you load (core + ecs + renderer + …).
-	No hardcoded dependency tree — just module.cproj specifying deps.
-	
-
 /project root/				# contains the compiled 
 ├─── bin/                	# Build output (binaries)
 ├─── build/                	# Build output (intermediate files)
@@ -115,8 +100,6 @@ programs/
 /plugins/          			# Modular extentions for (engine, editor, game features).
 ├─── CMakeLists.txt			# 
 └─── sample_plugin/			# Each plugin has its own directory
-
-     ├─── game/             // The player-facing Game application
 
 
 /assetc compile pipeline/	# We sync (raw, engine, and packed assets) for hot reload.
